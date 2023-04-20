@@ -6,3 +6,7 @@
 *.props
 *.targets
 *.info
+*.txt
+Hillel_Lesson8_HW/obj/Debug/net7.0/apphost
+*.pdb
+*.dll
