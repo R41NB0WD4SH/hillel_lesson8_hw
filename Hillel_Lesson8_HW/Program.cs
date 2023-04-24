@@ -12,230 +12,21 @@ namespace Hillel_Lesson8_HW
 
             Random rnd = new Random();
             
-            var lockObject = new object();
+            object lockObject = new object();
 
-            Thread t1 = new Thread(_ =>
+            Thread[] threads = new Thread[10];
+
+            for (int i = 0; i < threads.Length; i++)
             {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
+                threads[i] = CreateNewThread(ref even, ref odd, rnd, lockObject);
+            }
 
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            Thread t2 = new Thread(_ =>
+            for (int i = 0; i < threads.Length; i++)
             {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
-
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            Thread t3 = new Thread(_ =>
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
-
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            Thread t4 = new Thread(_ =>
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
-
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            Thread t5 = new Thread(_ =>
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
-
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            Thread t6 = new Thread(_ =>
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
-
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            Thread t7 = new Thread(_ =>
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
-
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            Thread t8 = new Thread(_ =>
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
-
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            Thread t9 = new Thread(_ =>
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
-
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            Thread t10 = new Thread(_ =>
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    int number = rnd.Next(1, 101);
-
-                    lock (lockObject)
-                    {
-                        if (number % 2 == 0)
-                        {
-                            even++;
-                        }
-                        else
-                        {
-                            odd++;
-                        }
-                    }
-                }
-            });
-            
-            
-            t1.Start();
-            t2.Start();
-            t3.Start();
-            t4.Start();
-            t5.Start();
-            t6.Start();
-            t7.Start();
-            t8.Start();
-            t9.Start();
-            t10.Start();
-            
-            t1.Join();
-            t2.Join();
-            t3.Join();
-            t4.Join();
-            t5.Join();
-            t6.Join();
-            t7.Join();
-            t8.Join();
-            t9.Join();
-            t10.Join();
+                threads[i].Start();
+                threads[i].Join();
+            }
+       
 
 
             Console.WriteLine("EVEN COUNT: {0}", even);
@@ -246,5 +37,40 @@ namespace Hillel_Lesson8_HW
 
 
         }
+
+        public static Thread CreateNewThread(ref int even, ref int odd, Random rnd, object lockObject)
+        {
+
+            int evenTmp = even;
+            int oddTmp = odd;
+            
+            Thread t1 = new Thread(_ =>
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    int number = rnd.Next(1, 101);
+
+                    lock (lockObject)
+                    {
+                        if (number % 2 == 0)
+                        {
+                            evenTmp++;
+                        }
+                        else
+                        {
+                            oddTmp++;
+                        }
+                    }
+                }
+            });
+
+            even += evenTmp;
+            odd += oddTmp;
+
+            return t1;
+        }
+
+
+
     }
 }
